@@ -1,0 +1,8 @@
+name: 'SyncUpdater'
+version: '1.0'
+author: 'Swedz'
+main: 'net.swedz.syncupdater.SyncUpdaterMain'
+commands:
+  syncupdater:
+    aliases: [supdater, su]
+    description: 'The main SyncUpdater command.'

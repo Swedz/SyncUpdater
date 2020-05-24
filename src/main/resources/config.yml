@@ -1,0 +1,16 @@
+verbose: true
+mode: AUTOMATIC
+directory: '/root/syncupdater/updates'
+reboot-timer: 30
+messages:
+  no-permission: '&cI''m sorry, but you do not have permission to perform this command.
+    Please contact the server administrators if you believe that this is in error.'
+  updated: '&c Recognized server update! Rebooting as soon as possible.'
+  countdown: '&c Server rebooting in %time%.'
+  rebooting: '&c Server rebooting...'
+automatic:
+  interval: 10
+redis:
+  hostname: localhost
+  port: 6379
+  password: password
