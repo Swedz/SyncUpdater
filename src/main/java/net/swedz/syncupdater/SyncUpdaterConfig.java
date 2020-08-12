@@ -6,14 +6,16 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 
 import java.io.File;
+import java.util.List;
 
 public class SyncUpdaterConfig {
 	private final FileConfiguration configuration;
 	
-	private boolean    verbose;
-	private UpdateMode mode;
-	private String     updateDirectory;
-	private int        rebootTimer;
+	private boolean      verbose;
+	private UpdateMode   mode;
+	private String       updateDirectory;
+	private int          rebootTimer;
+	private List<String> rebootCommands;
 	
 	private String noPermissionMessage, updatedMessage, countdownMessage, rebootingMessage;
 	
@@ -28,6 +30,7 @@ public class SyncUpdaterConfig {
 			this.mode = UpdateMode.valueOf(configuration.getString("mode"));
 			this.updateDirectory = configuration.getString("directory");
 			this.rebootTimer = configuration.getInt("reboot-timer");
+			this.rebootCommands = configuration.getStringList("reboot-commands");
 			
 			ConfigurationSection messages = configuration.getConfigurationSection("messages");
 			this.noPermissionMessage = this.colorize(messages.getString("no-permission"));
@@ -64,6 +67,10 @@ public class SyncUpdaterConfig {
 	
 	public int getRebootTimer() {
 		return rebootTimer;
+	}
+	
+	public List<String> getRebootCommands() {
+		return rebootCommands;
 	}
 	
 	public String getNoPermissionMessage() {

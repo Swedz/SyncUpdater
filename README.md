@@ -17,6 +17,9 @@ mode: AUTOMATIC
 directory: '/root/syncupdater/updates'
 # This is how long it takes for the reboot to take place, in seconds
 reboot-timer: 30
+# This defines all of the commands to be executed when the reboot is finishing
+reboot-commands:
+  - 'stop'
 # These are the messages for different things that get sent - pretty straight forward
 messages:
   no-permission: '&cI''m sorry, but you do not have permission to perform this command.
@@ -37,4 +40,9 @@ redis:
 ```
 
 Here is a list of the commands you can use:
-![SyncUpdater Commands](https://i.imgur.com/gSIKW7X.png)
+- **/syncupdater help**
+  - Displays all of the commands available.
+- **/syncupdater reload**
+  - Reloads the configuration file.
+- **/syncupdater update**
+  - Run an update check for all plugins.

@@ -1,7 +1,7 @@
 package net.swedz.syncupdater.update.redis;
 
-import net.swedz.syncupdater.api.redis.RedisListener;
-import net.swedz.syncupdater.api.redis.RedisSubscriber;
+import net.swedz.redis.RedisListener;
+import net.swedz.redis.RedisSubscriber;
 import org.json.JSONObject;
 
 @RedisSubscriber(channels = {"syncupdater:requestupdate"})

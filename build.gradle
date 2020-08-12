@@ -1,0 +1,84 @@
+plugins {
+    id 'java'
+    id 'maven'
+    id 'com.github.johnrengelman.shadow' version '6.0.0'
+}
+
+apply plugin: 'java'
+apply plugin: 'maven'
+apply plugin: 'com.github.johnrengelman.shadow'
+
+group 'net.swedz'
+version '1.1-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+    jcenter()
+    maven {
+        name = 'Spigot Repo'
+        url = 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/'
+    }
+    maven {
+        name = 'Swedz\'s Repo'
+        url = 'https://swedz.net/repo/'
+    }
+}
+
+dependencies {
+    shadow group: 'net.swedz', name: 'RedisWrapper', version: '1.0-SNAPSHOT'
+    shadow group: 'org.json', name: 'json', version: '20200518'
+    shadow group: 'commons-io', name: 'commons-io', version: '2.6'
+    shadow group: 'org.jetbrains', name: 'annotations', version: '16.0.2'
+    compileOnly group: 'org.spigotmc', name: 'spigot-api', version: '1.16.1-R0.1-SNAPSHOT'
+}
+
+jar {
+    destinationDirectory = file("/export/${project.version}")
+    archiveName "${project.name}-${project.version}-API.jar"
+}
+
+shadowJar {
+    classifier ''
+    configurations = [project.configurations.shadow]
+    destinationDirectory = file("/export/${project.version}")
+}
+
+import com.github.jengelman.gradle.plugins.shadow.tasks.ConfigureShadowRelocation
+
+task relocateShadowJar(type: ConfigureShadowRelocation) {
+    target = tasks.shadowJar
+    prefix = "net.swedz.syncupdater"
+}
+
+tasks.shadowJar.dependsOn tasks.relocateShadowJar
+
+def generatePom(String classifier) {
+    pom {
+        project {
+            groupId groupId
+            artifactId project.name
+            version project.version
+            withXml {
+                def repsNode = asNode().appendNode('repositories')
+                project.repositories.forEach({
+                    def repNode = repsNode.appendNode('repository')
+                    repNode.appendNode('id', it.name)
+                    repNode.appendNode('url', it.properties.get('url'))
+                })
+                def depsNode = asNode().appendNode('dependencies')
+                project.configurations*.dependencies*.forEach({
+                    def depNode = depsNode.appendNode('dependency')
+                    depNode.appendNode('groupId', it.group)
+                    depNode.appendNode('artifactId', it.name)
+                    depNode.appendNode('version', it.version)
+                })
+            }
+        }
+    }.writeTo("/export/${project.version}/${project.name}-${project.version}-${classifier}.pom")
+}
+
+task compileFully {
+    dependsOn 'jar'
+    generatePom('API')
+    dependsOn 'shadowJar'
+}

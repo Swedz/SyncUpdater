@@ -3,6 +3,7 @@ package net.swedz.syncupdater.api;
 import net.swedz.syncupdater.update.UpdaterHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -42,13 +43,17 @@ public class ServerRebootProcess extends BukkitRunnable {
 		}
 		// The server needs to reboot now
 		else {
-			// Conduct the reboot and stop the process
+			// Stop the process
 			this.cancel();
 			String rebootingMessage = handler.getSyncUpdater().getConfig().getRebootingMessage();
 			if(rebootingMessage != null)
 				Bukkit.broadcastMessage(
 						ChatColor.translateAlternateColorCodes('&', rebootingMessage));
-			Bukkit.shutdown();
+			
+			// Conduct the commands for the reboot
+			final ConsoleCommandSender console = Bukkit.getConsoleSender();
+			handler.getSyncUpdater().getConfig().getRebootCommands().forEach((command) ->
+					Bukkit.dispatchCommand(console, command));
 		}
 	}
 }

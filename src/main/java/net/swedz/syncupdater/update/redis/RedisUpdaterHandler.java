@@ -1,6 +1,6 @@
 package net.swedz.syncupdater.update.redis;
 
-import net.swedz.syncupdater.api.redis.RedisConnectionWrapper;
+import net.swedz.redis.RedisConnectionWrapper;
 import net.swedz.syncupdater.SyncUpdater;
 import net.swedz.syncupdater.update.UpdaterHandler;
 import org.bukkit.Bukkit;

@@ -1,5 +1,5 @@
 name: 'SyncUpdater'
-version: '1.0'
+version: '1.1'
 author: 'Swedz'
 main: 'net.swedz.syncupdater.SyncUpdaterMain'
 commands:
